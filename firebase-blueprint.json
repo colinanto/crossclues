@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "Game": {
+      "title": "Game",
+      "description": "Represents a single session of Cross Clues",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "hostId": { "type": "string" },
+        "status": { "type": "string", "enum": ["lobby", "in-progress", "finished"] },
+        "words": {
+          "type": "object",
+          "properties": {
+            "rows": { "type": "object" },
+            "cols": { "type": "object" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["hostId", "status", "words"]
+    },
+    "Player": {
+      "title": "Player",
+      "description": "A player in a game session",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "isReady": { "type": "boolean" },
+        "assignedCoordinate": { "type": "string" }
+      },
+      "required": ["uid", "name"]
+    },
+    "Clue": {
+      "title": "Clue",
+      "description": "A clue submitted by a player",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "clue": { "type": "string" },
+        "coordinate": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "clue", "coordinate"]
+    }
+  },
+  "firestore": {
+    "/games/{gameId}": {
+      "schema": "Game",
+      "description": "Settings and state for a game session"
+    },
+    "/games/{gameId}/players/{playerId}": {
+      "schema": "Player",
+      "description": "Players currently in the game"
+    },
+    "/games/{gameId}/clues/{clueId}": {
+      "schema": "Clue",
+      "description": "Clues submitted by players"
+    }
+  }
+}
